@@ -49,15 +49,20 @@ class Router implements RouterInterface, EventSubscriberInterface
     /**
      * Constructor
      *
-     * @param \React\EventLoop\LoopInterface $loop
+     * @param  \React\EventLoop\LoopInterface|null  $loop
+     * @param  \Thruway\RealmManager|null  $realmManager
+     * @param  \Thruway\Event\EventDispatcher|null  $eventDispatcher
      */
-    public function __construct(LoopInterface $loop = null)
-    {
+    public function __construct(
+        LoopInterface $loop = null,
+        RealmManager $realmManager = null,
+        EventDispatcher $eventDispatcher = null
+    ) {
         Utils::checkPrecision();
 
         $this->loop            = $loop ?: Factory::create();
-        $this->realmManager    = new RealmManager();
-        $this->eventDispatcher = new EventDispatcher();
+        $this->realmManager    = $realmManager ?: new RealmManager();
+        $this->eventDispatcher = $eventDispatcher ?: new EventDispatcher();
 
         $this->eventDispatcher->addSubscriber($this);
 
